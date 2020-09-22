@@ -8,10 +8,12 @@ public class PlayerActions : MonoBehaviour
     private Inventory _inventory;
     private Transform _spawn;
     private Animator _animator;
+    private PlayerMovements _movements;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _movements = GetComponent<PlayerMovements>();
     }
 
     void Start()
@@ -48,6 +50,10 @@ public class PlayerActions : MonoBehaviour
     // Method called by the animation.
     public void Attack()
     {
-        Instantiate(spellPrefab, transform.position, Quaternion.identity);
+        var spell = Instantiate(spellPrefab, transform.position, Quaternion.identity);
+        if (_movements.GetDirection() == PlayerMovements.Direction.Left)
+        {
+            spell.speed *= -1;
+        }
     }
 }

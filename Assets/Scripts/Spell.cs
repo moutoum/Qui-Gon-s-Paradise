@@ -14,6 +14,11 @@ public class Spell : MonoBehaviour
     private void Start()
     {
         _rigidbody.velocity = new Vector2(speed, 0);
+        if (speed < 0)
+        {
+            var localScale = transform.localScale;
+            transform.localScale = new Vector3(localScale.x * -1, localScale.y, localScale.z);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

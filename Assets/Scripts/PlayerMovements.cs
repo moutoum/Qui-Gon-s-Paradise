@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class PlayerMovements : MonoBehaviour
 {
+    public enum Direction
+    {
+        Right,
+        Left,
+    };
+    
     [Header("Speeds")]
     public float speed;
     public float jumpForce;
@@ -19,6 +25,7 @@ public class PlayerMovements : MonoBehaviour
     private Vector3 _velocity = Vector3.zero;
     private bool _isJumping = false;
     private bool _isGrounded;
+    private Direction _direction = Direction.Right;
 
     private void Awake()
     {
@@ -36,7 +43,7 @@ public class PlayerMovements : MonoBehaviour
             _isJumping = true;
         }
 
-        FlipSprite();
+        ComputeDirection();
         _animator.SetFloat("speed", Mathf.Abs(_rigidbody.velocity.x));
         _animator.SetFloat("verticalSpeed", _rigidbody.velocity.y);
     }
@@ -63,15 +70,22 @@ public class PlayerMovements : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
     }
 
-    private void FlipSprite()
+    private void ComputeDirection()
     {
         if (_rigidbody.velocity.x > 0.1f)
         {
             _spriteRenderer.flipX = false;
+            _direction = Direction.Right;
         }
         else if (_rigidbody.velocity.x < -0.1f)
         {
             _spriteRenderer.flipX = true;
+            _direction = Direction.Left;
         }
+    }
+
+    public Direction GetDirection()
+    {
+        return _direction;
     }
 }
